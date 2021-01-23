@@ -1,4 +1,4 @@
-jsPlumb.ready(function () {
+jsPlumbBrowserUI.ready(function () {
 
     // list of possible anchor locations for the blue source element
     var sourceAnchors = [
@@ -9,7 +9,7 @@ jsPlumb.ready(function () {
         [ 1, 1, 0, 1 ]
     ];
 
-    var instance = window.instance = jsPlumb.newInstance({
+    var instance = window.instance = jsPlumbBrowserUI.newInstance({
         // drag options
         dragOptions: { cursor: "pointer", zIndex: 2000 },
         // default to a gradient stroke from blue to green.
