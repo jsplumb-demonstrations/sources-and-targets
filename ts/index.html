@@ -9,12 +9,11 @@
         <link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
 
         <link rel="stylesheet" href="node_modules/@jsplumb/browser-ui/css/jsplumbtoolkit.css">
-        <link rel="stylesheet" href="demo.css">
+        <link rel="stylesheet" href="../demo.css">
     </head>
     <body>
 
         <div class="jtk-demo-main">
-			<!-- demo -->
             <div class="jtk-demo-canvas canvas-wide source-target-demo jtk-surface jtk-surface-nopan" id="canvas">
                 <div class="window" id="sourceWindow1" jtk-not-draggable>
                     <strong>Window 1</strong>
@@ -26,9 +25,7 @@
                 <div class="window smallWindow" id="targetWindow5"><strong>Window 5</strong><a href="#" class="enableDisableTarget">disable</a><br/><br/></div>
                 <div class="window smallWindow" id="targetWindow6"><strong>Window 6</strong><a href="#" class="enableDisableTarget">disable</a><br/><br/></div>
             </div>
-			<!-- /demo -->
-            <!-- explanation -->
-            <div class="description">
+			<div class="description">
                 <h4>SOURCES &amp; TARGETS</h4>
                 <p>Drag Connections from the blue element to any of the green ones. You can also drag existing
                     Connections from one green element to another - Connections are, by default, detachable (this behaviour can be overridden).</p>
@@ -40,17 +37,9 @@
                 </p>
                 <p>The green elements are configured as Connection targets, with a `Top` anchor, and are draggable</p>
             </div>
-            <!-- /explanation -->
         </div>
 
-
-        <!-- JS -->
-        <script src="node_modules/@jsplumb/community-core/js/jsplumb.core.umd.js"></script>
-        <script src="node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.umd.js"></script>
-        <!-- /JS -->
-
-		<!--  demo code -->
-		<script src="demo.js"></script>
+        <script src="_build/demo.umd.js"></script>
 
     </body>
 </html>

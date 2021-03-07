@@ -1,7 +1,10 @@
-jsPlumbBrowserUI.ready(function () {
+import { ready, newInstance } from "@jsplumb/browser-ui"
+import { AnchorPlacement, AnchorLocations, DotEndpoint } from "@jsplumb/core"
+
+ready(() => {
 
     // list of possible anchor locations for the blue source element
-    var sourceAnchors = [
+    const sourceAnchors:Array<AnchorPlacement> = [
         [ 0, 1, 0, 1 ],
         [ 0.25, 1, 0, 1 ],
         [ 0.5, 1, 0, 1 ],
@@ -9,47 +12,38 @@ jsPlumbBrowserUI.ready(function () {
         [ 1, 1, 0, 1 ]
     ];
 
-    var instance = window.instance = jsPlumbBrowserUI.newInstance({
+    const canvas = document.getElementById("canvas")
+
+    const instance = newInstance({
         // drag options
         dragOptions: { cursor: "pointer", zIndex: 2000 },
-        // default to a gradient stroke from blue to green.
         paintStyle: {
-            gradient: { stops: [
-                [ 0, "#0d78bc" ],
-                [ 1, "#558822" ]
-            ] },
             stroke: "#558822",
             strokeWidth: 10
         },
         container: canvas
-    });
+    })
 
     // click listener for the enable/disable link in the source box (the blue one).
-    instance.on(document.getElementById("enableDisableSource"), "click", function (e) {
-        var sourceDiv = (e.target|| e.srcElement).parentNode;
-        var state = instance.toggleSourceEnabled(sourceDiv);
-        this.innerHTML = (state ? "disable" : "enable");
-        instance[state ? "removeClass" : "addClass"](sourceDiv, "element-disabled");
-        instance.consume(e);
+    instance.on(document.getElementById("enableDisableSource"), "click", (e:Event) => {
+        const sourceDiv = ((e.target|| e.srcElement) as Element).parentNode as HTMLElement
+        const state = instance.toggleSourceEnabled(sourceDiv)
+        document.getElementById("enableDisableSource").innerHTML = (state ? "disable" : "enable")
+        instance[state ? "removeClass" : "addClass"](sourceDiv, "element-disabled")
+        instance.consume(e)
     });
 
     // click listener for enable/disable in the small green boxes
-    instance.on(document.getElementById("canvas"), "click", ".enableDisableTarget", function (e) {
-        var targetDiv = (e.target || e.srcElement).parentNode;
-        var state = instance.toggleTargetEnabled(targetDiv);
-        this.innerHTML = (state ? "disable" : "enable");
-        instance[state ? "removeClass" : "addClass"](targetDiv, "element-disabled");
-        instance.consume(e);
-    });
-
-    // bind to a connection event, just for the purposes of pointing out that it can be done.
-    instance.bind("connection", function (i, c) {
-        if (typeof console !== "undefined")
-            console.log("connection", i.connection);
+    instance.on(document.getElementById("canvas"), "click", ".enableDisableTarget",  (e:Event) => {
+        const targetDiv = ((e.target|| e.srcElement) as Element).parentNode as HTMLElement
+        const state = instance.toggleTargetEnabled(targetDiv)
+        document.getElementById("canvas").innerHTML = (state ? "disable" : "enable")
+        instance[state ? "removeClass" : "addClass"](targetDiv, "element-disabled")
+        instance.consume(e)
     });
 
     // get the list of ".smallWindow" elements.            
-    var smallWindows = document.querySelectorAll(".smallWindow");
+    const smallWindows = document.querySelectorAll(".smallWindow");
 
     smallWindows.forEach(function(el) { instance.manage(el); });
 
@@ -62,16 +56,15 @@ jsPlumbBrowserUI.ready(function () {
             filter:"a",
             filterExclude:true,
             maxConnections: -1,
-            endpoint:[ "Dot", { radius: 7, cssClass:"small-blue" } ],
+            endpoint:{type:DotEndpoint.type, options:{ radius: 7, cssClass:"small-blue" } },
             anchor:sourceAnchors
         });
 
         // configure the .smallWindows as targets.
         smallWindows.forEach(function(el) {
             instance.makeTarget(el, {
-                dropOptions: { hoverClass: "hover" },
-                anchor:"Top",
-                endpoint:[ "Dot", { radius: 11, cssClass:"large-green" } ]
+                anchor:AnchorLocations.Top,
+                endpoint:{type:DotEndpoint.type, options:{ radius: 11, cssClass:"large-green" } }
             });
         });
 
@@ -79,6 +72,4 @@ jsPlumbBrowserUI.ready(function () {
         instance.connect({ source: document.getElementById("sourceWindow1"), target: document.getElementById("targetWindow5") });
         instance.connect({ source: document.getElementById("sourceWindow1"), target: document.getElementById("targetWindow2") });
     });
-
-   // jsPlumb.fire("jsPlumbDemoLoaded", instance);
 });	
